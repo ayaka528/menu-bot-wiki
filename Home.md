@@ -92,4 +92,5 @@ async resetDialog(step) {
 ```
 This one-line function enables us to build a "message loop". Basically, when we've finished a conversation flow we get to this step, which takes us back to the beginning of the main menu. This helps accomplish our goal of never leaving a user in the dark about what they can do on a specific turn. 
 
+### Creating Component Dialogs
 
