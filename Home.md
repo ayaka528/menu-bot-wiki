@@ -10,7 +10,7 @@ This sample uses the botbuilder's waterfall dialog and prompt abstractions to mo
 Before setting up our dialogs, we need to make sure to have a place for them to save their state (where they are in a conversation). Let's take a step back to show how we plumb our state management - if you've already set this up, feel free to skip ahead to the "Creating a Waterfall Dialog" section. 
 
 ### Setting up State 
-We create our `ConversationState` instance in our index.js, by first creating a `MemoryStorage` instance and passing it to the `ConversationState` constructor:
+We create our `ConversationState` instance in our index.js by first creating a `MemoryStorage` instance and passing it to the `ConversationState` constructor:
 ```js
 const memoryStorage = new MemoryStorage();
 const conversationState = new ConversationState(memoryStorage);
