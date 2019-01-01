@@ -83,7 +83,7 @@ async handleMenuResult(step) {
 ```
 As you can see, the value of the user's response shows up in `step.result.value`. We use a switch case to determine which answer they gave and begin the next dialog as necessary. Note that we have no `default` handler in our switch case. This is because our dialog will only ever get to this step if user entered one of the valid inputs (or clicked a button). 
 
-Depending on which button was clicked, we call `step.beginDialog` with the name of other dialogs that we've defined. We'll get into how we defined those other dialogs in "Creating Component Dialogs", but for now suffice it to say that `beginDialog` pushes another dialog onto a dialog stack such that subsequent messages get sent to the new dialog until it finishes. Once that dialog finishes, we come back to the last step of our Main Menu dialog: 
+Depending on which button was clicked, we call `step.beginDialog` with the name of other dialogs that we've defined. We'll get into how we defined those other dialogs in [Creating Component Dialogs](https://github.com/ryanvolum/menu-bot/wiki#creating-component-dialogs), but for now suffice it to say that `beginDialog` pushes another dialog onto a dialog stack such that subsequent messages get sent to the new dialog until it finishes. Once that dialog finishes, we come back to the last step of our Main Menu dialog: 
 
 ```js
 async resetDialog(step) {
