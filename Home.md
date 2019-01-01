@@ -20,7 +20,7 @@ memberJoined(activity) {
 ## Waterfall Dialogs and Prompts
 This sample uses the botbuilder's waterfall dialog and prompt abstractions to model its conversation. At a high level, a waterfall dialog is an array of functions to run step-by-step on each conversation turn. Waterfall dialogs are great for expressing rigid conversations, where a specific series of steps should always occur. They're not so good for expressing conversations with lots of context switching. In this case our "food bank bot" should follow a fairly regimented flow to get users to the information they need, so waterfall dialogs are a great choice!
 
-Before setting up our dialogs, we need to make sure to have a place for them to save their state. Specifically, dialogs need to know where they are in a conversation in order to kick off the right step. Let's take a step back to show how we plumb our state management - if you've already set this up, feel free to skip ahead to the "Creating a Waterfall Dialog" section. 
+Before setting up our dialogs, we need to make sure to have a place for them to save their state. Specifically, dialogs need to know where they are in a conversation in order to kick off the right step. Let's take a step back to show how we plumb our state management - if you've already set this up, feel free to skip ahead to the [Creating a Waterfall](https://github.com/ryanvolum/menu-bot/wiki#creating-a-waterfall-dialog) section. 
 
 ### Setting up State 
 We create our `ConversationState` instance in our index.js by first creating a `MemoryStorage` instance and passing it to the `ConversationState` constructor:
