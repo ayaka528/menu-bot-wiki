@@ -26,8 +26,10 @@ const myBot = new FoodBot(conversationState);
 Now that our bot has a place to save its state, we create a `dialogState` property and a `DialogSet`. We make both of these properties of our bot class to best organize our bot: 
 
 ```js
-this.dialogState = this.conversationState.createProperty(DIALOG_STATE_PROPERTY);
-this.dialogs = new DialogSet(this.dialogState);
+constructor(conversationState) {
+     this.conversationState = conversationState;
+     this.dialogState = this.conversationState.createProperty(DIALOG_STATE_PROPERTY);
+     this.dialogs = new DialogSet(this.dialogState);
 ```
 Now we can create our waterfall dialog and add it to the `DialogSet`. A waterfall dialog has a unique string name for persisting and reusing it. In this case that unique string name is identified by the `MENU_DIALOG` variable: 
 
