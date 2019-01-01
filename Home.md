@@ -90,7 +90,7 @@ async resetDialog(step) {
     return step.replaceDialog(MENU_DIALOG);
 }
 ```
-This one-line function enables us to build a "message loop". Basically, when we've finished a conversation flow we get to this step, which takes us back to the beginning of the main menu. We accomplish this by replacing the current Main Menu dialog with itself, using the `step.replaceDialog` function. The bot will now start back at the first step of the Main Menu dialog. This helps accomplish our goal of never leaving a user in the dark about what they can do on a specific turn. 
+This one-line function enables us to build a "message loop". Basically, when we've finished a conversation flow we get to this step, which takes us back to the beginning of the main menu. We accomplish this by replacing the current Main Menu dialog with itself, using the `step.replaceDialog` function. The bot will now start back at the first step of the Main Menu dialog, accomplishing our goal of never leaving a user in the dark about what they can do on a specific turn. 
 
 ### Creating Component Dialogs
 
