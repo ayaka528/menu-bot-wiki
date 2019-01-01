@@ -1,5 +1,5 @@
 # Menu-Bot 
-This bot demonstrates several concepts at once. At a high level, it offers a fully guided flow so that the user is always aware of their options on any given conversation turn. When bots leave conversations open-ended, users often don't know what to do or say - guiding conversations with buttons (even if you also support natural language) helps mitigate this issue. 
+This bot demonstrates several concepts at once. At a high level, it offers a fully guided flow so that the user is always aware of their options on any given conversation turn. When bots leave conversations open-ended, users often don't know what to do or say - guiding conversations with buttons (even if you also support natural language) helps mitigate this issue. We construct the guided conversation by first welcoming the user, and then by using waterfall dialogs and prompts to communicate with our user. 
 
 ## Welcoming the User
 
@@ -7,7 +7,7 @@ This bot demonstrates several concepts at once. At a high level, it offers a ful
 ## Waterfall Dialogs and Prompts
 This sample uses the botbuilder's waterfall dialog and prompt abstractions to model a conversation. At a high level, a waterfall dialog is an array of functions to run on each conversation turn. Waterfall dialogs are great for expressing rigid conversations, where a specific series of steps should always occur. They're not so good for expressing conversations with lots of context switching. In this case our "food bank bot" should follow a fairly regimented flow to get users to the information they need, so waterfall dialogs are a great choice!
 
-Before setting up our dialogs, we need to make sure to have a place for them to save their state (where they are in a conversation). Let's take a step back to show how we plumb our state management - if you've already set this up, feel free to skip ahead to the "Creating a Waterfall Dialog" section. 
+Before setting up our dialogs, we need to make sure to have a place for them to save their state. Specifically, dialogs need to know where they are in a conversation in order to kick off the right step. Let's take a step back to show how we plumb our state management - if you've already set this up, feel free to skip ahead to the "Creating a Waterfall Dialog" section. 
 
 ### Setting up State 
 We create our `ConversationState` instance in our index.js by first creating a `MemoryStorage` instance and passing it to the `ConversationState` constructor:
