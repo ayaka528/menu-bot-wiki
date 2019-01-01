@@ -28,7 +28,7 @@ We create our `ConversationState` instance in our index.js by first creating a `
 const memoryStorage = new MemoryStorage();
 const conversationState = new ConversationState(memoryStorage);
 ```
-We can pass the `MemoryStorage` constructor a storage provider (Azure Tables, Azure Cosmos, etc.) if we like. `ConversationState` would then get and set state against that external provider. For now we'll keep it empty, which will instead store everything in memory. 
+We could have passed the `MemoryStorage` constructor a storage provider (Azure Tables, Azure Cosmos, etc.), which would allow `ConversationState` to then get and set state against that external provider. For now we'll keep it empty, which will instead store everything in memory. 
 
 Next, we initialize our bot with that `ConversationState` instance: 
 ```js
