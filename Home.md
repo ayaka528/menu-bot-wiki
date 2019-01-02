@@ -93,4 +93,45 @@ async resetDialog(step) {
 This one-line function enables us to build a "message loop". Basically, when we've finished a conversation flow we get to this step, which takes us back to the beginning of the main menu. We accomplish this by replacing the current Main Menu dialog with itself, using the `step.replaceDialog` function. The bot will now start back at the first step of the Main Menu dialog, accomplishing our goal of never leaving a user in the dark about what they can do on a specific turn. 
 
 ### Creating Component Dialogs
-If you navigate through the project directory, you'll find a folder called `dialogs` with two files: `DonateFoodDialog.js` and `FindFoodDialog.js`. We declare these dialogs outside of our `bot.js` for a few reasons. For one, building all of our conversation flow in one file would get unmanageable. It would be near impossible to work collaboratively with other developers in that same file. Separating dialogs also allows us to treat them as reusable modules.
+If you navigate through the project directory, you'll find a folder called `dialogs` with two files: `DonateFoodDialog.js` and `FindFoodDialog.js`. We declare these dialogs outside of our `bot.js` for a few reasons. For one, building all of our conversation flow in one file would get unmanageable. It would be near impossible to work collaboratively with other developers in that same file. Separating dialogs also allows us to treat them as reusable modules - we could use them multiple times in the same bot, or even publish them to be used in other bots. In order to achieve this modular behavior, we rely on `ComponentDialogs`, which act as a module a dialog or multiple dialogs. Let's take a look at the `DonateFoodDialog`. 
+
+Our dialog inherits from `ComponentDialog` and takes a dialogId: 
+```js
+class DonateFoodDialog extends ComponentDialog {
+    constructor(dialogId) {
+        super(dialogId);
+```
+
+It then sets `this.initialDialogId` to the name of our waterfall dialog:
+
+```js
+// ID of the child dialog that should be started anytime the component is started.
+this.initialDialogId = dialogId;
+```
+
+In this case our waterfall dialog will have the same name as our Component Dialog, since it's the only dialog in our Component Dialog. If we choose not to explicitly set `this.initialDialogId`, it will automatically be set to the first dialog added to the ComponentDialog. Next, we add a `ChoicePrompt` that we will be using in our waterfall dialog, just as we did in our Main Menu dialog: 
+
+```js
+this.addDialog(new ChoicePrompt('choicePrompt'));
+```
+
+And we then add our waterfall dialog: 
+
+```js
+this.addDialog(new WaterfallDialog(dialogId, [
+    async function (step) {
+        return await step.prompt('choicePrompt', {
+            choices: getValidDonationDays(),
+            prompt: "What day would you like to donate food?",
+            retryPrompt: "That's not a valid day! Please choose a valid day."
+        });
+    },
+    async function (step) {
+        const day = step.result.value;
+        let filteredFoodBanks = filterFoodBanksByDonation(day);
+        let carousel = createFoodBankDonationCarousel(filteredFoodBanks);
+        return step.context.sendActivity(carousel);
+    }
+]));
+```
+Note that instead of declaring the steps of the waterfall as members of the class, we just coded them inline as anonymous functions. We took this approach here since we know we'll only use these functions once, and since the code footprint is fairly small. 
