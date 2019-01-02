@@ -133,6 +133,7 @@ this.addDialog(new WaterfallDialog(dialogId, [
         return step.context.sendActivity(carousel);
     }
 ]));
+```
 
 Note that instead of declaring the steps of the waterfall as members of the class, we just coded them inline as anonymous functions. We took this approach here since we know we'll only use these functions once, and because the code footprint is fairly small. 
 
