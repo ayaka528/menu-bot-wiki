@@ -2,12 +2,14 @@
 This bot demonstrates several concepts at once. At a high level, it offers a fully guided flow so that the user is always aware of their options on any given conversation turn. When bots leave conversations open-ended, users often don't know what to do or say - guiding conversations with buttons (even if you also support natural language) helps mitigate this issue. We construct the guided conversation by first welcoming the user, and then by using waterfall dialogs and prompts to communicate with our user. 
 
 ## Welcoming the User
-If our bot doesn't proactively welcome a user, then the user won't have any sense for what the bot's function is. Take a look at in-depth [botbuilder document](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-send-welcome-message?view=azure-bot-service-4.0&tabs=csharp%2Ccsharpmulti%2Ccsharpwelcomeback) for more details. In this case we welcome our user by listening for any incoming `ConversationUpdate` activities, validating that a new member was added, and sending a message: 
+If our bot doesn't proactively welcome a user, then the user won't have any sense for what the bot's function is. Take a look at in-depth [botbuilder document](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-send-welcome-message?view=azure-bot-service-4.0&tabs=csharp%2Ccsharpmulti%2Ccsharpwelcomeback) for more details. In this case we welcome our user by listening for any incoming `ConversationUpdate` activities in our `onTurn` function, validating that a new member was added, sending a message, and starting a dialog: 
 ```js
 if (turnContext.activity.type === ActivityTypes.ConversationUpdate) {
     if (this.memberJoined(turnContext.activity)) {
         await turnContext.sendActivity(`Hey there! Welcome to the food bank bot. I'm here to help orchestrate 
                                         the delivery of excess food to local food banks!`);
+        await dialogContext.beginDialog(MENU_DIALOG);
+
 ```
 
 The member joined function is just a helper to abstract away some of the complexity of determining whether a member joined the conversation (as opposed to the bot): 
@@ -91,6 +93,38 @@ async resetDialog(step) {
 }
 ```
 This one-line function enables us to build a "message loop". Basically, when we've finished a conversation flow we get to this step, which takes us back to the beginning of the main menu. We accomplish this by replacing the current Main Menu dialog with itself, using the `step.replaceDialog` function. The bot will now start back at the first step of the Main Menu dialog, accomplishing our goal of never leaving a user in the dark about what they can do on a specific turn. 
+
+### Orchestrating Our Dialog from the onTurn Function
+Now that we've created and added our `WaterfallDialog` to our `DialogSet`, we need to let our bot know when to start and continue it. Most of this code will be fairly boilerplate for any bot that uses dialogs. As a quick refresher, the `onTurn` function is the function that gets called on every single turn. That means any time we get a message from our user, we run the `onTurn` function. `onTurn` receives a context object as a parameter, which bundles up the incoming activity and several conversational helpers for orchestrating the conversation. Let's take a look at this bot's `onTurn` function. 
+
+We start by creating a `dialogContext`: 
+```js
+    async onTurn(turnContext) {
+        const dialogContext = await this.dialogs.createContext(turnContext);
+```
+This dialog context contains helpers to assess the state of our dialogs. In this case, we'll use it to determine if there is an active dialog, and to continue it if there is. Note that we only do this when we receive messages from the user (Message Activities):  
+
+```js
+        if (turnContext.activity.type === ActivityTypes.Message) {
+            if (dialogContext.activeDialog) {
+                await dialogContext.continueDialog();
+...
+```
+
+If there is no active dialog, we go ahead and start our Main Menu dialog: 
+
+```js
+            } else {
+                await dialogContext.beginDialog(MENU_DIALOG);
+            }
+```
+
+When we start or continue a dialog from our `onTurn`, the dialog will run the appropriate step(s) (waterfall functions), and then return. It's therefore important for us to save all state changes at the end of our `onTurn` function. Remember that we're saving our dialog's state through our `ConversationState` instance. If we don't actually call `conversationState.saveChanges`, they won't be persisted and we'll never move on to subsequent dialog steps:
+
+```js
+        await this.conversationState.saveChanges(turnContext);
+```
+The rest of the `onTurn` function contains the welcome code which we looked at in [Welcoming the User](https://github.com/ryanvolum/menu-bot/wiki/Home/_edit#welcoming-the-user). 
 
 ### Creating Component Dialogs
 If you navigate through the project directory, you'll find a folder called `dialogs` with two files: `DonateFoodDialog.js` and `FindFoodDialog.js`. We declare these dialogs outside of our `bot.js` for a few reasons. For one, building all of our conversation flow in one file would get unmanageable. It would be near impossible to work collaboratively with other developers in that same file. Separating dialogs also allows us to treat them as reusable modules - we could use them multiple times in the same bot, or even publish them to be used in other bots. In order to achieve this modular behavior, we rely on `ComponentDialogs`, which act as a module a dialog or multiple dialogs. Let's take a look at the `FindFoodDialog`. 
