@@ -93,7 +93,7 @@ async resetDialog(step) {
 This one-line function enables us to build a "message loop". Basically, when we've finished a conversation flow we get to this step, which takes us back to the beginning of the main menu. We accomplish this by replacing the current Main Menu dialog with itself, using the `step.replaceDialog` function. The bot will now start back at the first step of the Main Menu dialog, accomplishing our goal of never leaving a user in the dark about what they can do on a specific turn. 
 
 ### Creating Component Dialogs
-If you navigate through the project directory, you'll find a folder called `dialogs` with two files: `DonateFoodDialog.js` and `FindFoodDialog.js`. We declare these dialogs outside of our `bot.js` for a few reasons. For one, building all of our conversation flow in one file would get unmanageable. It would be near impossible to work collaboratively with other developers in that same file. Separating dialogs also allows us to treat them as reusable modules - we could use them multiple times in the same bot, or even publish them to be used in other bots. In order to achieve this modular behavior, we rely on `ComponentDialogs`, which act as a module a dialog or multiple dialogs. Let's take a look at the `DonateFoodDialog`. 
+If you navigate through the project directory, you'll find a folder called `dialogs` with two files: `DonateFoodDialog.js` and `FindFoodDialog.js`. We declare these dialogs outside of our `bot.js` for a few reasons. For one, building all of our conversation flow in one file would get unmanageable. It would be near impossible to work collaboratively with other developers in that same file. Separating dialogs also allows us to treat them as reusable modules - we could use them multiple times in the same bot, or even publish them to be used in other bots. In order to achieve this modular behavior, we rely on `ComponentDialogs`, which act as a module a dialog or multiple dialogs. Let's take a look at the `FindFoodDialog`. 
 
 Our dialog inherits from `ComponentDialog` and takes a dialogId: 
 ```js
@@ -121,19 +121,19 @@ And we then add our waterfall dialog:
 this.addDialog(new WaterfallDialog(dialogId, [
     async function (step) {
         return await step.prompt('choicePrompt', {
-            choices: getValidDonationDays(),
-            prompt: "What day would you like to donate food?",
+            choices: getValidPickupDays(),
+            prompt: "What day would you like to pickup food?",
             retryPrompt: "That's not a valid day! Please choose a valid day."
         });
     },
     async function (step) {
         const day = step.result.value;
-        let filteredFoodBanks = filterFoodBanksByDonation(day);
-        let carousel = createFoodBankDonationCarousel(filteredFoodBanks);
+        let filteredFoodBanks = filterFoodBanksByPickup(day);
+        let carousel = createFoodBankPickupCarousel(filteredFoodBanks)
         return step.context.sendActivity(carousel);
     }
 ]));
-```
+
 Note that instead of declaring the steps of the waterfall as members of the class, we just coded them inline as anonymous functions. We took this approach here since we know we'll only use these functions once, and because the code footprint is fairly small. 
 
 As with our Main Menu dialog, this waterfall is an array of functions. The first prompts users for an array of days (determined by a helper method that process a JSON schedule). The second handles the response by creating a carousel of cards that display food banks open on the selected day. To create cards and carousels, we use the `CardFactory` in the `botbuilder` package. See `schedule-helpers` to see the full implementation, and check out the [Add Media to Messages](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-add-media-attachments?view=azure-bot-service-4.0&tabs=csharp) Azure doc. 
