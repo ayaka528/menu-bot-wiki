@@ -2,7 +2,7 @@
 This bot demonstrates several concepts at once. At a high level, it offers a fully guided flow so that the user is always aware of their options on any given conversation turn. When bots leave conversations open-ended, users often don't know what to do or say - guiding conversations with buttons (even if you also support natural language) helps mitigate this issue. We construct the guided conversation by first welcoming the user, and then by using waterfall dialogs and prompts to communicate with our user. 
 
 ## Welcoming the User
-If our bot doesn't proactively welcome a user, then the user won't have any sense for what the bot's function is. Take a look at in-depth [botbuilder document](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-send-welcome-message?view=azure-bot-service-4.0&tabs=csharp%2Ccsharpmulti%2Ccsharpwelcomeback) for more details. In this case we welcome our user by listening for any incoming `ConversationUpdate` activities in our `onTurn` function, validating that a new member was added, sending a message, and starting a dialog: 
+If our bot doesn't proactively welcome a user, then the user won't have any sense for what the bot is capable of doing. Take a look at in-depth [botbuilder document](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-send-welcome-message?view=azure-bot-service-4.0&tabs=csharp%2Ccsharpmulti%2Ccsharpwelcomeback) for more details. In this case we welcome our user by listening for any incoming `ConversationUpdate` activities in our `onTurn` function, validating that a new member was added, sending a message, and starting a dialog: 
 ```js
 if (turnContext.activity.type === ActivityTypes.ConversationUpdate) {
     if (this.memberJoined(turnContext.activity)) {
