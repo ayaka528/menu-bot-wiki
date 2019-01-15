@@ -65,7 +65,7 @@ async promptForMenu(step) {
         retryPrompt: "I'm sorry, that wasn't a valid response. Are you looking to donate food or find a food bank?"
     });
 ``` 
-In this function, we prompt the user with two choices, "Donate Food" and "Find a Food Bank". Just as our dialog had a name, we're calling our choice prompt by the name `MENU_PROMPT`. We also defined this choice prompt in our bot's constructor, so that we can reuse it throughout the bot:
+In this function, we prompt the user with three choices, "Donate Food", "Find a Food Bank" and "Contact Food Bank". Just as our dialog had a name, we're calling this choice prompt by the name `MENU_PROMPT`. We also defined this choice prompt in our bot's constructor, so that we can reuse it throughout the bot:
 ```js
 this.dialogs.add(new ChoicePrompt(MENU_PROMPT));
 ```
@@ -127,7 +127,7 @@ When we start or continue a dialog from our `onTurn`, the dialog will run the ap
 The rest of the `onTurn` function contains the welcome code which we looked at in [Welcoming the User](https://github.com/ryanvolum/menu-bot/wiki/Home/_edit#welcoming-the-user). 
 
 ### Creating Component Dialogs
-Now that we've taken a look at our top-level waterfall dialog, let's dive into the other dialogs in this bot. If you navigate through the project directory, you'll find a folder called `dialogs` with two files: `DonateFoodDialog.js` and `FindFoodDialog.js`. We declare these dialogs outside of our `bot.js` for a few reasons. For one, building all of our conversation flow in one file would get unmanageable. It would be near impossible to work collaboratively with other developers in that same file. Separating dialogs also allows us to treat them as reusable modules - we could use them multiple times in the same bot, or even publish them to be used in other bots. In order to achieve this modular behavior, we rely on `ComponentDialogs`, which act as a module for a dialog or multiple dialogs. Let's take a look at the `FindFoodDialog`. 
+Now that we've taken a look at our top-level waterfall dialog, let's dive into the other dialogs in this bot. If you navigate through the project directory, you'll find a folder called `dialogs` with three files: `DonateFoodDialog.js`, `FindFoodDialog.js` and `ContactDialog.js`. We declare these dialogs outside of our `bot.js` for a few reasons. For one, building all of our conversation flow in one file would get unmanageable. It would be near impossible to work collaboratively with other developers in that same file. Separating dialogs also allows us to treat them as reusable modules - we could use them multiple times in the same bot, or even publish them to be used in other bots. In order to achieve this modular behavior, we rely on `ComponentDialogs`, which act as a module for a dialog or multiple dialogs. Let's take a look at the `FindFoodDialog`. 
 
 Our dialog inherits from `ComponentDialog` and takes a dialogId: 
 ```js
