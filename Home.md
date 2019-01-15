@@ -46,7 +46,7 @@ constructor(conversationState) {
      this.dialogState = this.conversationState.createProperty(DIALOG_STATE_PROPERTY);
      this.dialogs = new DialogSet(this.dialogState);
 ```
-Now we can create our waterfall dialog and add it to the `DialogSet`. A waterfall dialog has a unique string name for persisting and reusing it. In this case that unique string name is identified by the `MENU_DIALOG` variable: 
+Now we can create our waterfall dialog and add it to the `DialogSet`. A waterfall dialog has a unique string name for persisting and reusing it. In this case we're using the `MENU_DIALOG` variable (declared at the top of our code) as our dialog's name: 
 
 ```js
         this.dialogs.add(new WaterfallDialog(MENU_DIALOG, [
