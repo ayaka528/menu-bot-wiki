@@ -58,12 +58,13 @@ Now we can create our waterfall dialog and add it to the `DialogSet`. A waterfal
 As mentioned above, a `WaterfallDialog` is just an array of functions that will run in series. This waterfall dialog is composed of three functions, each called a `step`. We could declare these functions anonymously (inline and without a name), but chose to refer to them this way to better organize our code. Let's take a look at the first function: 
 
 ```js
-async promptForMenu(step) {
-    return step.prompt(MENU_PROMPT, {
-        choices: ["Donate Food", "Find a Food Bank"],
-        prompt: "Do you have food to donate or do you need to find a food bank?",
-        retryPrompt: "I'm sorry, that wasn't a valid response. Are you looking to donate food or find a food bank?"
-    });
+    async promptForMenu(step) {
+        return step.prompt(MENU_PROMPT, {
+            choices: ["Donate Food", "Find a Food Bank", "Contact Food Bank"],
+            prompt: "Do you have food to donate, do you need food, or are you contacting a food bank?",
+            retryPrompt: "I'm sorry, that wasn't a valid response. Please select one of the options"
+        });
+    }
 ``` 
 In this function, we prompt the user with three choices, "Donate Food", "Find a Food Bank" and "Contact Food Bank". Just as our dialog had a name, we're calling this choice prompt by the name `MENU_PROMPT`. We also defined this choice prompt in our bot's constructor, so that we can reuse it throughout the bot:
 ```js
@@ -73,15 +74,17 @@ When we call our prompt, we defined three properties: `choices`, `prompt`, and `
 
 In our next dialog step, we parse the user's answer: 
 ```js
-async handleMenuResult(step) {
-    switch (step.result.value) {
-        case "Donate Food":
-            return step.beginDialog(DONATE_FOOD_DIALOG);
-        case "Find a Food Bank":
-            return step.beginDialog(FIND_FOOD_DIALOG);
+    async handleMenuResult(step) {
+        switch (step.result.value) {
+            case "Donate Food":
+                return step.beginDialog(DONATE_FOOD_DIALOG);
+            case "Find a Food Bank":
+                return step.beginDialog(FIND_FOOD_DIALOG);
+            case "Contact Food Bank":
+                return step.beginDialog(CONTACT_DIALOG);
+        }
+        return step.next();
     }
-    return step.next();
-}
 ```
 As you can see, the value of the user's response shows up in `step.result.value`. We use a switch case to determine which answer they gave and begin the next dialog as necessary. Note that we have no `default` handler in our switch case. This is because our dialog will only ever get to this step if user entered one of the valid inputs (or clicked a button). 
 
