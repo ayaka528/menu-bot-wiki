@@ -175,3 +175,24 @@ this.addDialog(new WaterfallDialog(dialogId, [
 Note that instead of declaring the steps of the waterfall as members of the class, we just coded them inline as anonymous functions. We took this approach here since we know we'll only use these functions once, and because the code footprint is fairly small. 
 
 As with our Main Menu dialog, this waterfall is an array of functions. The first prompts users for an array of days (determined by a helper method that process a JSON schedule). The second handles the response by creating a carousel of cards that display food banks open on the selected day. To create cards and carousels, we use the `CardFactory` in the `botbuilder` package. See `schedule-helpers` to see the full implementation, and check out the [Add Media to Messages](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-add-media-attachments?view=azure-bot-service-4.0&tabs=csharp) Azure doc for more information about Hero Cards and carousels. 
+
+### Persisting State throughout a Dialog
+Sometimes a dialog needs to persist some information that it's gathered from a user. Take a look at the ContactDialog flow below.
+
+ **Note**: this flow isn't actually sending a food bank a message, so feel free to test the bot yourself!
+
+You can see that we gather the user's email address, the message they want to send and the name of the food bank they want to send it to. We then use all that information to send a message to a food bank. But how are we persisting this information throughout the lifetime of the dialog? 
+
+Let's take a look at the `ContactDialog` dialog. Like our other Component Dialogs, we're anonymously creating an array of functions that the bot will run through one at a time: 
+```
+this.addDialog(new WaterfallDialog(dialogId, [
+...
+]
+``` 
+These functions prompt users for the name of the Food Bank they want to contact (using `ChoicePrompt`), their email address (using `TextPrompt`) and the message they want to send (also using `TextPrompt). It also asks them to confirm that they want to send a message, which uses `ConfirmPrompt`. When we gather a piece from the user that we know we'll need later, we save it to the `step.values` dictionary: 
+```
+// Persist the email address for later waterfall steps to be able to access it
+step.values.email = step.result;
+```
+
+
