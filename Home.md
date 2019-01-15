@@ -66,7 +66,7 @@ As mentioned above, a `WaterfallDialog` is just an array of functions that will 
         });
     }
 ``` 
-In this function, we prompt the user with three choices, "Donate Food", "Find a Food Bank" and "Contact Food Bank". Just as our dialog had a name, we're calling this choice prompt by the name `MENU_PROMPT`. We also defined this choice prompt in our bot's constructor, so that we can reuse it throughout the bot:
+In this function, we prompt the user with three choices, "Donate Food", "Find a Food Bank" and "Contact Food Bank". Just as our dialog had a name, we need to name prompts as well. In this case, we're calling this choice prompt by the name `MENU_PROMPT`. We also register this choice prompt in our bot's constructor, so that we can reuse it throughout the bot:
 ```js
 this.dialogs.add(new ChoicePrompt(MENU_PROMPT));
 ```
