@@ -177,7 +177,7 @@ Note that instead of declaring the steps of the waterfall as members of the clas
 As with our Main Menu dialog, this waterfall is an array of functions. The first prompts users for an array of days (determined by a helper method that process a JSON schedule). The second handles the response by creating a carousel of cards that display food banks open on the selected day. To create cards and carousels, we use the `CardFactory` in the `botbuilder` package. See `schedule-helpers` to see the full implementation, and check out the [Add Media to Messages](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-add-media-attachments?view=azure-bot-service-4.0&tabs=csharp) Azure doc for more information about Hero Cards and carousels. 
 
 ### Persisting State throughout a Dialog
-Sometimes a dialog needs to persist some information that it's gathered from a user. Take a look at the ContactDialog flow below.
+Sometimes a dialog needs to persist some information to be used on a later step. Take a look at the ContactDialog conversation flow below:
 
  **Note**: this flow isn't actually sending a food bank a message, so feel free to test the bot yourself!
 
@@ -194,5 +194,8 @@ These functions prompt users for the name of the Food Bank they want to contact 
 // Persist the email address for later waterfall steps to be able to access it
 step.values.email = step.result;
 ```
-
+Then on later turns we can access that property on the same `step.values` dictionary!
+```
+sendFoodBankMessage(step.result.foodBankName, step.result.message, step.result.email);
+```
 
