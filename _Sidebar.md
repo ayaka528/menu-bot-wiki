@@ -1,2 +1,3 @@
 - [Node](https://github.com/ryanvolum/menu-bot/wiki/Node-Menu-Bot-Wiki)
 - [C#](https://github.com/ryanvolum/menu-bot/wiki/C%23-Menu-Bot-Wiki)
+- [Deploy your bot to Azure from Source Control](https://github.com/ryanvolum/menu-bot/wiki/Deployment)
