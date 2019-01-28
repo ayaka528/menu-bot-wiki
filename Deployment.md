@@ -36,7 +36,7 @@ Make some minor changes to your `.bot` file before publishing to Azure.
                         "id": "2"
                     }
                 ],
-                "padlock": "Y3J03Lk3Ykg6/4jY1GVd4Q==!CsNWpsgt+DBSzswXVyJe5IrlpyF79oHppZnuhX0pOwyKahr059qfpMz2UdyeaYSj",
+                "padlock": "",
                 "version": "2.0"
             }
         ````
