@@ -178,7 +178,7 @@ As mentioned above, a `WaterfallDialog` is just an array of functions that will 
 In this function, we prompt the user with three choices, "Donate Food", "Find a Food Bank" and "Contact Food Bank". Just as our dialog had a name, we need to name prompts as well. In this case, we're calling this choice prompt by the name `MENUPROMPT` which is declared at the top of the class. We also register this choice prompt in our bot's constructor, so that we can reuse it throughout the bot:
 
 ```csharp
-    tthis.AddDialog(new ChoicePrompt(MENUPROMPT));
+    this.AddDialog(new ChoicePrompt(MENUPROMPT));
 ```
 When we call our prompt, we defined three properties: `Choices`, `Prompt`, and `RetryPrompt`. `Choices` is the array of options, which will ultimately render as `SuggestedActions`: buttons that only exist for one turn. `Prompt` is the text we actually want to prompt the users with. `RetryPrompt` is the text that the bot will use if a user replies with something other than the button text. 
 
