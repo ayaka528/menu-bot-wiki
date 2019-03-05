@@ -1,6 +1,9 @@
 This Wiki explains concepts and patterns present in the Node menu-bot. To take a look at the bot code, take a look at the [javascript_nodejs](https://github.com/ryanvolum/menu-bot/tree/master/javascript_nodejs) directory in this repo. 
 
-This bot demonstrates several concepts at once. At a high level, it offers a fully guided flow so that the user is always aware of their options on any given conversation turn. When bots leave conversations open-ended, users often don't know what to do or say - guiding conversations with buttons (even if you also support natural language) helps mitigate this issue. We construct the guided conversation by first welcoming the user, and then by using waterfall dialogs and prompts to communicate with our user. Here's a quick peek at one of this bot's conversation flows: 
+## Guiding Conversations 
+At a high level, this project demonstrates how a bot can guide a conversation using a menuing system. The end user is always presented with a discrete set of options so that there is never any ambiguity around what they can do. Naturally, when we think about bot development we immediately think of using Natural Language Processing (NLP) to understand user _intent_ and extract relevant _entities_. However, if we rely entirely on NLP, users are often left in the dark about what they can say on a given step. When our modality (in this case a web client) allows it, we should _show_ users what they can do with rich controls like buttons, cards and carousels. We can _then_ layer NLP over our conversation to short circuit conversations. 
+
+We construct the guided conversation by first welcoming the user, and then using Waterfall Dialog and Prompt abstractions (from the botbuilder SDK) to scaffold out our conversation. Here's a quick peek at one of this bot's conversation flows: 
 
 ![DonateDialog GIF](https://github.com/ryanvolum/menu-bot/blob/master/wiki_assets/DonateDialog.gif)
 
